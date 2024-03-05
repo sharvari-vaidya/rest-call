@@ -33,7 +33,7 @@ public class LoginController {
 		log.info("Entering in login controller with request :: " + request.toString());
 		HttpHeaders headers = new HttpHeaders();
 		ResponseModel response = loginService.makeLogin(request, log);
-		if (!(response.getErrorCode() == Constants.ErrorCode.FAILURE)) {
+		if (response.getErrorCode() == Constants.ErrorCode.USER_LOGGED_IN_SUCCESSFULLY) {
 			String token = redisService.getValue(Constants.RedisKeys.REDIS_JWT_TOKEN+request.getUserId());
 			headers.add("jwtToken", token);
 		}

@@ -21,7 +21,6 @@ import com.example.main.entity.UserEntity;
 import com.example.main.model.ResponseModel;
 import com.example.main.model.UserInfoModel;
 import com.example.main.repo.UserRepository;
-import com.example.main.service.JwtService;
 import com.example.main.service.LoginService;
 import com.example.main.service.RedisService;
 import com.example.main.service.Util;
