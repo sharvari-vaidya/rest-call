@@ -1,6 +1,7 @@
 package com.example.main.entity;
 
 import java.io.Serializable;
+import java.sql.Timestamp;
 import java.time.Instant;
 
 import jakarta.persistence.Column;
@@ -54,7 +55,7 @@ public class ProductEntity implements Serializable{
 	private String category;
 	
 	@Column(name="expiry_date")
-	private Instant expiryDate;
+	private Timestamp expiryDate;
 	
 	@Column(name="user_id")
 	private String userId;
@@ -63,6 +64,6 @@ public class ProductEntity implements Serializable{
 	private String inventory;
 	
 	@Column(name="created_date")
-	private Instant createdDate;
+	private Timestamp createdDate;
 
 }

@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -16,6 +17,7 @@ import com.example.main.model.ResponseModel;
 import com.example.main.service.ProductService;
 
 import lombok.extern.log4j.Log4j2;
+import redis.clients.jedis.JedisCluster;
 
 @RestController
 @Log4j2
@@ -32,10 +34,10 @@ public class ProductController {
 		return new ResponseEntity<ProductResponseModel>(response, HttpStatus.OK); 
 
 	}
-	@RequestMapping(value="/getAllProducts",method=RequestMethod.GET)
-	public ResponseEntity<ProductResponseModel> addProduct(){
+	@RequestMapping(value="/getAllProducts/{userId}",method=RequestMethod.GET)
+	public ResponseEntity<ProductResponseModel> addProduct(@PathVariable("userId") String user){
 		log.info("Entering in product controller :: getAllProducts method ");
-		ProductResponseModel products = productService.getAllProducts(log);
+		ProductResponseModel products = productService.getAllProducts(user,log);
 		log.info("Exiting with response :: "+products.toString());
 		return new ResponseEntity<ProductResponseModel>(products, HttpStatus.OK); 
 

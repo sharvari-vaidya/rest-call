@@ -11,6 +11,6 @@ public interface ProductService {
 
 	ProductResponseModel addProduct(ProductEntity request, Logger log);
 
-	ProductResponseModel getAllProducts(Logger log);
+	ProductResponseModel getAllProducts(String user,Logger log);
 
 }

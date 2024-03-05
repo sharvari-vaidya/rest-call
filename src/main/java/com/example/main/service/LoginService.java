@@ -9,4 +9,6 @@ public interface LoginService {
 
 	ResponseModel makeLogin(UserEntity request, Logger log);
 
+	ResponseModel makeLogout(UserEntity request, Logger log);
+	
 }

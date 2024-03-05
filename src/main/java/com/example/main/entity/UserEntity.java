@@ -1,5 +1,6 @@
 package com.example.main.entity;
 
+import java.sql.Timestamp;
 import java.time.Instant;
 
 import jakarta.persistence.Column;
@@ -33,6 +34,6 @@ public class UserEntity {
 	private String emailId;
 
 	@Column(name = "created_date")
-	private Instant createdDate;
+	private Timestamp createdDate;
 
 }

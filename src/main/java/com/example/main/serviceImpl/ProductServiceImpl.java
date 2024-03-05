@@ -11,28 +11,42 @@ import org.springframework.stereotype.Service;
 
 import com.example.main.entity.ProductEntity;
 import com.example.main.model.ProductResponseModel;
-import com.example.main.model.ResponseModel;
 import com.example.main.repo.ProductRepository;
 import com.example.main.service.ProductService;
+import com.example.main.service.RedisService;
 import com.example.main.util.Constants;
+import com.example.main.service.Util;
+
 
 @Service
 public class ProductServiceImpl implements ProductService {
 
 	@Autowired
 	private ProductRepository prodRepository;
+	
+	@Autowired
+	private RedisService redisService;
+	
+	@Autowired
+	private Util util;
 
 	@Override
 	public ProductResponseModel addProduct(ProductEntity request, Logger log) {
 		ProductResponseModel response = new ProductResponseModel();
 		List<ProductEntity> products = new ArrayList();
 		try {
+			String user = redisService.getValue(Constants.RedisKeys.REDIS_SESSION_KEY+request.getUserId());
+			if (!(util.isNeitherNullNorEmpty(user))) {
+				response.setErrorCode(Constants.ErrorCode.USER_NOT_LOGGEDIN);
+				response.setErrorMessage("USER IS NOT LOGGEDIN");
+				return response;
+			}
 			Optional<ProductEntity> product = prodRepository.findById(request.getId());
 			if (product.isPresent()) {
 				response.setErrorCode(Constants.ErrorCode.PRODUCT_ALREADY_PRESENT);
 				response.setErrorMessage("PRODUCT ALREADY PRESENT");
 			} else {
-				request.setCreatedDate(Instant.now());
+				request.setCreatedDate(util.longToTimestamp(System.currentTimeMillis()));
 				ProductEntity prod = prodRepository.save(request);
 				response.setErrorCode(Constants.ErrorCode.PRODUCT_CREATED);
 				response.setErrorMessage("PRODUCT CREATED SUCCESSFULLY ");
@@ -49,10 +63,16 @@ public class ProductServiceImpl implements ProductService {
 	}
 
 	@Override
-	public ProductResponseModel getAllProducts(Logger log) {
+	public ProductResponseModel getAllProducts(String userId,Logger log) {
 		ProductResponseModel response = new ProductResponseModel();
 		List<ProductEntity> products = new ArrayList();
 		try {
+			String user = redisService.getValue(Constants.RedisKeys.REDIS_SESSION_KEY+userId);
+			if (!(util.isNeitherNullNorEmpty(user))) {
+				response.setErrorCode(Constants.ErrorCode.USER_NOT_LOGGEDIN);
+				response.setErrorMessage("USER IS NOT LOGGEDIN");
+				return response;
+			}
 			products = prodRepository.findAll();
 			if(products.isEmpty()) {
 				response.setErrorCode(Constants.ErrorCode.NO_ANY_PRODUCT_PRESENT);
