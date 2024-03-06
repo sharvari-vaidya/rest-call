@@ -48,7 +48,7 @@ public class LoginServiceImpl implements LoginService {
 	private AuthenticationManager authenticationManager;
 	
 	@Autowired
-	BCryptPasswordEncoder encoder;
+	private BCryptPasswordEncoder encoder;
 
 	@Override
 	public ResponseModel makeLogin(UserEntity request, Logger log) {

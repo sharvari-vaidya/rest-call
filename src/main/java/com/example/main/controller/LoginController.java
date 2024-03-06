@@ -49,11 +49,4 @@ public class LoginController {
 		return new ResponseEntity<ResponseModel>(response, HttpStatus.OK);
 	}
 
-	@RequestMapping(value = "/login1", method = RequestMethod.GET)
-	public String login1() {
-
-		return "Hello World";
-
-	}
-
 }

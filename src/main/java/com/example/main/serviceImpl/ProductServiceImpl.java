@@ -38,7 +38,7 @@ public class ProductServiceImpl implements ProductService {
 			String user = redisService.getValue(Constants.RedisKeys.REDIS_SESSION_KEY+request.getUserId());
 			if (!(util.isNeitherNullNorEmpty(user))) {
 				response.setErrorCode(Constants.ErrorCode.USER_NOT_LOGGEDIN);
-				response.setErrorMessage("USER IS NOT LOGGEDIN");
+				response.setErrorMessage("USER NOT LOGGEDIN");
 				return response;
 			}
 			Optional<ProductEntity> product = prodRepository.findById(request.getId());
@@ -48,7 +48,7 @@ public class ProductServiceImpl implements ProductService {
 			} else {
 				request.setCreatedDate(util.longToTimestamp(System.currentTimeMillis()));
 				ProductEntity prod = prodRepository.save(request);
-				response.setErrorCode(Constants.ErrorCode.PRODUCT_CREATED);
+				response.setErrorCode(Constants.ErrorCode.PRODUCT_ADDED_SUCCESSFULLY);
 				response.setErrorMessage("PRODUCT CREATED SUCCESSFULLY ");
 				products.add(prod);
 				response.setProducts(products);
@@ -74,8 +74,8 @@ public class ProductServiceImpl implements ProductService {
 				return response;
 			}
 			products = prodRepository.findAll();
-			if(products.isEmpty()) {
-				response.setErrorCode(Constants.ErrorCode.NO_ANY_PRODUCT_PRESENT);
+			if(!(util.isNeitherNullNorEmpty(products))) {
+				response.setErrorCode(Constants.ErrorCode.NO_ANY_PRODUCT_FOUND);
 				response.setErrorMessage("NO ANY PRODUCT PRESENT");
 			}else{
 				response.setErrorCode(Constants.ErrorCode.PRODUCTS_FOUND);
